@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Analyse Natale Astrologique</title>
+<title>Astrological Natal Chart</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -35,7 +35,7 @@
     overflow-x: hidden;
   }
 
-  /* Fond étoilé */
+  /* Starry background */
   body::before {
     content: '';
     position: fixed;
@@ -48,461 +48,204 @@
     z-index: 0;
   }
 
-  /* Étoiles décoratives */
-  .stars {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-  }
+  .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
   .star {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: var(--gold-light);
-    border-radius: 50%;
-    opacity: 0;
-    animation: twinkle var(--d, 3s) var(--delay, 0s) ease-in-out infinite;
+    position: absolute; width: 2px; height: 2px; background: var(--gold-light);
+    border-radius: 50%; opacity: 0; animation: twinkle var(--d, 3s) var(--delay, 0s) ease-in-out infinite;
   }
   @keyframes twinkle {
     0%,100% { opacity: 0; transform: scale(0.5); }
     50% { opacity: var(--op, 0.6); transform: scale(1); }
   }
 
-  .container {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    max-width: 560px;
-    padding-top: 1rem;
-  }
+  .container { position: relative; z-index: 1; width: 100%; max-width: 560px; padding-top: 1rem; }
 
-  /* En-tête */
-  .header {
-    text-align: center;
-    margin-bottom: 2.5rem;
-    animation: fadeDown 0.8s ease forwards;
-  }
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  /* Header */
+  .header { text-align: center; margin-bottom: 2.5rem; animation: fadeDown 0.8s ease forwards; }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+  .header-emblem { font-size: 2rem; margin-bottom: 0.75rem; display: block; filter: drop-shadow(0 0 12px rgba(201,168,76,0.4)); }
+  .header h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 300; letter-spacing: 0.05em; line-height: 1.2; }
+  .header h1 em { font-style: italic; color: var(--gold-light); }
+  .header p { margin-top: 0.75rem; font-size: 0.82rem; font-weight: 300; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; }
 
-  .header-emblem {
-    font-size: 2rem;
-    margin-bottom: 0.75rem;
-    display: block;
-    filter: drop-shadow(0 0 12px rgba(201,168,76,0.4));
-  }
-
-  .header h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.4rem;
-    font-weight: 300;
-    letter-spacing: 0.05em;
-    line-height: 1.2;
-    color: var(--text);
-  }
-  .header h1 em {
-    font-style: italic;
-    color: var(--gold-light);
-  }
-
-  .header p {
-    margin-top: 0.75rem;
-    font-size: 0.82rem;
-    font-weight: 300;
-    color: var(--text-muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  /* Ligne décorative */
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin: 1.5rem 0;
-    color: var(--border);
-  }
-  .divider::before, .divider::after {
-    content: '';
-    flex: 1;
-    height: 0.5px;
-    background: var(--border);
-  }
+  .divider { display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0; color: var(--border); }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 0.5px; background: var(--border); }
   .divider span { font-size: 0.7rem; color: var(--gold); letter-spacing: 0.15em; text-transform: uppercase; white-space: nowrap; }
 
-  /* Carte formulaire */
   .card {
-    background: var(--dark2);
-    border: 0.5px solid var(--border);
-    border-radius: 16px;
-    padding: 2rem;
-    animation: fadeUp 0.9s 0.1s ease forwards;
-    opacity: 0;
+    background: var(--dark2); border: 0.5px solid var(--border); border-radius: 16px;
+    padding: 2rem; animation: fadeUp 0.9s 0.1s ease forwards; opacity: 0;
   }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* Champs */
   .field { margin-bottom: 1.2rem; }
-  label {
-    display: block;
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 6px;
-  }
+  label { display: block; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
   label .req { color: var(--error); margin-left: 2px; }
 
   input, select {
-    width: 100%;
-    height: 44px;
-    padding: 0 14px;
-    background: var(--dark3);
-    border: 0.5px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-family: 'Jost', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 300;
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    -webkit-appearance: none;
+    width: 100%; height: 44px; padding: 0 14px; background: var(--dark3); border: 0.5px solid var(--border);
+    border-radius: 8px; color: var(--text); font-family: 'Jost', sans-serif; font-size: 0.9rem; font-weight: 300;
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s; color-scheme: dark;
   }
   input::placeholder { color: var(--text-muted); }
-  input:focus, select:focus {
-    border-color: var(--border-hover);
-    box-shadow: 0 0 0 3px rgba(201,168,76,0.08);
-  }
-  select { cursor: pointer; }
-  select option { background: var(--dark2); }
+  input:focus { border-color: var(--border-hover); box-shadow: 0 0 0 3px rgba(201,168,76,0.08); }
 
   .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
 
-  /* Autocomplete ville */
+  /* Autocomplete city */
   .city-wrap { position: relative; }
-  .city-clear {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: var(--text-muted);
-    font-size: 14px;
-    display: none;
-    line-height: 1;
-    z-index: 2;
-    background: none;
-    border: none;
-    padding: 0;
-  }
-  .city-clear:hover { color: var(--text); }
-
+  .city-clear { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-muted); font-size: 14px; display: none; background: none; border: none; z-index: 2; }
   .dropdown {
-    position: absolute;
-    top: calc(100% + 4px);
-    left: 0;
-    right: 0;
-    background: var(--dark2);
-    border: 0.5px solid var(--border-hover);
-    border-radius: 8px;
-    z-index: 999;
-    max-height: 220px;
-    overflow-y: auto;
-    display: none;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: var(--dark2); border: 0.5px solid var(--border-hover);
+    border-radius: 8px; z-index: 999; max-height: 220px; overflow-y: auto; display: none; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
   }
   .dropdown.open { display: block; }
-  .dropdown::-webkit-scrollbar { width: 4px; }
-  .dropdown::-webkit-scrollbar-track { background: transparent; }
-  .dropdown::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-  .dd-item {
-    padding: 10px 14px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    color: var(--text);
-    border-bottom: 0.5px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: background 0.15s;
-  }
-  .dd-item:last-child { border-bottom: none; }
+  .dd-item { padding: 10px 14px; cursor: pointer; font-size: 0.85rem; border-bottom: 0.5px solid var(--border); display: flex; align-items: center; gap: 10px; }
   .dd-item:hover, .dd-item.active { background: var(--dark3); }
   .dd-flag { font-size: 16px; flex-shrink: 0; }
   .dd-name { font-weight: 400; }
-  .dd-detail { font-size: 0.75rem; color: var(--text-muted); margin-top: 1px; }
+  .dd-detail { font-size: 0.75rem; color: var(--text-muted); }
   .dd-msg { padding: 12px 14px; font-size: 0.82rem; color: var(--text-muted); text-align: center; }
 
-  /* Badge coordonnées */
-  .coords-badge {
-    display: none;
-    margin-top: 6px;
-    font-size: 0.72rem;
-    color: var(--success);
-    letter-spacing: 0.05em;
-    align-items: center;
-    gap: 6px;
-  }
-  .coords-badge::before { content: '✦'; font-size: 10px; }
-
-  /* Boutons genre / langue */
+  /* Buttons */
   .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
   .toggle-btn {
-    padding: 8px 18px;
-    border: 0.5px solid var(--border);
-    border-radius: 6px;
-    background: transparent;
-    color: var(--text-muted);
-    font-family: 'Jost', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 300;
-    letter-spacing: 0.06em;
-    cursor: pointer;
-    transition: all 0.2s;
+    padding: 8px 18px; border: 0.5px solid var(--border); border-radius: 6px; background: transparent; color: var(--text-muted);
+    font-family: 'Jost', sans-serif; font-size: 0.82rem; font-weight: 300; letter-spacing: 0.06em; cursor: pointer; transition: all 0.2s;
   }
   .toggle-btn:hover { border-color: var(--border-hover); color: var(--text); }
-  .toggle-btn.sel {
-    background: rgba(201,168,76,0.1);
-    border-color: var(--gold);
-    color: var(--gold-light);
-    font-weight: 400;
-  }
+  .toggle-btn.sel { background: rgba(201,168,76,0.1); border-color: var(--gold); color: var(--gold-light); font-weight: 400; }
 
-  /* URL Script */
-  .script-url-field { position: relative; }
-  .script-url-field input { padding-right: 40px; font-size: 0.78rem; }
-  .url-hint {
-    margin-top: 6px;
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-  }
-  .url-hint a { color: var(--gold); text-decoration: none; }
-  .url-hint a:hover { text-decoration: underline; }
-
-  /* Bouton soumettre */
   .submit-btn {
-    width: 100%;
-    height: 50px;
-    margin-top: 0.5rem;
-    background: linear-gradient(135deg, #B8922A, #C9A84C, #B8922A);
-    background-size: 200% 100%;
-    border: none;
-    border-radius: 10px;
-    color: var(--dark);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.05rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    cursor: pointer;
-    transition: background-position 0.4s, opacity 0.2s, transform 0.15s;
-    position: relative;
-    overflow: hidden;
+    width: 100%; height: 50px; margin-top: 1rem; background: linear-gradient(135deg, #B8922A, #C9A84C, #B8922A);
+    background-size: 200% 100%; border: none; border-radius: 10px; color: var(--dark); font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; font-weight: 600; letter-spacing: 0.08em; cursor: pointer; transition: background-position 0.4s, opacity 0.2s, transform 0.15s;
   }
-  .submit-btn:hover:not(:disabled) {
-    background-position: 100% 0;
-    transform: translateY(-1px);
-  }
-  .submit-btn:active:not(:disabled) { transform: translateY(0); }
+  .submit-btn:hover:not(:disabled) { background-position: 100% 0; transform: translateY(-1px); }
   .submit-btn:disabled { opacity: 0.45; cursor: not-allowed; }
-  .submit-btn .btn-inner { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn-inner { display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-  /* Spinner */
-  .spinner {
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(13,11,18,0.3);
-    border-top-color: var(--dark);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    display: none;
-  }
+  .spinner { width: 16px; height: 16px; border: 2px solid rgba(13,11,18,0.3); border-top-color: var(--dark); border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* Status */
-  .status-box {
-    margin-top: 1rem;
-    padding: 14px 16px;
-    border-radius: 10px;
-    font-size: 0.85rem;
-    line-height: 1.6;
-    display: none;
-    animation: fadeUp 0.3s ease forwards;
-  }
+  .status-box { margin-top: 1rem; padding: 14px 16px; border-radius: 10px; font-size: 0.85rem; line-height: 1.6; display: none; }
   .status-box.sending { display: block; background: rgba(201,168,76,0.08); border: 0.5px solid rgba(201,168,76,0.3); color: var(--gold-light); }
   .status-box.success { display: block; background: rgba(76,175,130,0.08); border: 0.5px solid rgba(76,175,130,0.3); color: #6ECFA0; }
   .status-box.error   { display: block; background: rgba(207,102,121,0.08); border: 0.5px solid rgba(207,102,121,0.3); color: #E08898; }
-
-  /* Lien PDF résultat */
-  .pdf-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 10px;
-    padding: 8px 16px;
-    background: rgba(76,175,130,0.12);
-    border: 0.5px solid rgba(76,175,130,0.4);
-    border-radius: 6px;
-    color: #6ECFA0;
-    font-size: 0.82rem;
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    transition: background 0.2s;
-  }
-  .pdf-link:hover { background: rgba(76,175,130,0.2); }
-
-  /* Note bas */
-  .footnote {
-    text-align: center;
-    margin-top: 2rem;
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    letter-spacing: 0.06em;
-    animation: fadeUp 1s 0.3s ease forwards;
-    opacity: 0;
-  }
 </style>
 </head>
 <body>
 
-<!-- Étoiles animées -->
 <div class="stars" id="stars"></div>
 
 <div class="container">
-
   <div class="header">
     <span class="header-emblem">✦</span>
-    <h1>Analyse <em>Natale</em><br>Astrologique</h1>
-    <p>Thème de naissance · Rapport personnalisé</p>
+    <h1>Birth Chart <em>Reading</em></h1>
+    <p>Astrological Analysis · Personalized Report</p>
   </div>
 
   <div class="card">
-
-    <!-- Nom -->
     <div class="field">
-      <label>Prénom <span class="req">*</span></label>
-      <input type="text" id="f_name" placeholder="Votre prénom" autocomplete="off">
+      <label>First Name <span class="req">*</span></label>
+      <input type="text" id="f_name" placeholder="Your name" autocomplete="off">
     </div>
 
-    <!-- Email -->
+    <!-- EMAIL IS NOW OPTIONAL -->
     <div class="field">
-      <label>Email <span class="req">*</span></label>
-      <input type="email" id="f_email" placeholder="votre@email.com" autocomplete="off">
+      <label>Email Address (Optional)</label>
+      <input type="email" id="f_email" placeholder="you@email.com" autocomplete="off">
     </div>
 
-    <!-- Date + Heure -->
     <div class="row2">
       <div class="field">
-        <label>Date de naissance <span class="req">*</span></label>
+        <label>Date of Birth <span class="req">*</span></label>
         <input type="date" id="f_date">
       </div>
+      <!-- TIME IS NOW OPTIONAL -->
       <div class="field">
-        <label>Heure de naissance <span class="req">*</span></label>
+        <label>Time of Birth (Optional)</label>
         <input type="time" id="f_time">
       </div>
     </div>
 
-    <!-- Ville de naissance -->
     <div class="field">
-      <label>Ville de naissance <span class="req">*</span></label>
+      <label>City of Birth <span class="req">*</span></label>
       <div class="city-wrap">
-        <input type="text" id="f_city" placeholder="Tapez les premières lettres…" autocomplete="off">
-        <button class="city-clear" id="city_clear" type="button" onclick="clearCity()" aria-label="Effacer">✕</button>
+        <input type="text" id="f_city" placeholder="Type city name..." autocomplete="off">
+        <button class="city-clear" id="city_clear" type="button" onclick="clearCity()">✕</button>
         <div class="dropdown" id="city_dd"></div>
       </div>
-      <div class="coords-badge" id="coords_badge">
-        <span id="coords_txt"></span>
-      </div>
     </div>
 
-    <div class="divider"><span>Informations complémentaires</span></div>
+    <div class="divider"><span>Additional details</span></div>
 
-    <!-- Genre -->
     <div class="field">
-      <label>Genre</label>
+      <label>Gender</label>
       <div class="btn-group" id="gender_group">
-        <button class="toggle-btn sel" type="button" onclick="sel(this,'gender_group','Femme')">Femme</button>
-        <button class="toggle-btn" type="button" onclick="sel(this,'gender_group','Homme')">Homme</button>
+        <button class="toggle-btn sel" type="button" onclick="sel(this,'gender_group','Female')">Female</button>
+        <button class="toggle-btn" type="button" onclick="sel(this,'gender_group','Male')">Male</button>
+        <button class="toggle-btn" type="button" onclick="sel(this,'gender_group','Other')">Other</button>
       </div>
     </div>
 
-    <!-- Langue -->
     <div class="field">
-      <label>Langue du rapport</label>
+      <label>Report Language</label>
       <div class="btn-group" id="lang_group">
-        <button class="toggle-btn sel" type="button" onclick="sel(this,'lang_group','Français')">Français</button>
-        <button class="toggle-btn" type="button" onclick="sel(this,'lang_group','English')">English</button>
-        <button class="toggle-btn" type="button" onclick="sel(this,'lang_group','العربية')" style="font-family:sans-serif">العربية</button>
+        <button class="toggle-btn sel" type="button" onclick="sel(this,'lang_group','English')">English</button>
+        <button class="toggle-btn" type="button" onclick="sel(this,'lang_group','French')">Français</button>
+        <button class="toggle-btn" type="button" onclick="sel(this,'lang_group','Spanish')">Español</button>
+        <button class="toggle-btn" type="button" onclick="sel(this,'lang_group','German')">Deutsch</button>
+        <button class="toggle-btn" type="button" onclick="sel(this,'lang_group','Portuguese')">Português</button>
+        <button class="toggle-btn" type="button" onclick="sel(this,'lang_group','Arabic')" style="font-family:sans-serif">العربية</button>
       </div>
     </div>
 
-    <div class="divider"><span>Configuration</span></div>
-
-    <!-- URL Google Apps Script -->
-    <div class="field script-url-field">
-      <label>URL de votre Google Apps Script <span class="req">*</span></label>
-      <input type="url" id="f_gas_url" placeholder="https://script.google.com/macros/s/…/exec">
-      <p class="url-hint">
-        Dans votre script → <strong>Déployer → Nouveau déploiement → Application Web → Accès : Tout le monde</strong><br>
-        Copiez l'URL et collez-la ici.
-      </p>
-    </div>
-
-    <!-- Bouton -->
     <button class="submit-btn" id="submit_btn" type="button" onclick="handleSubmit()">
       <span class="btn-inner">
         <span class="spinner" id="spinner"></span>
-        <span id="btn_label">Générer mon analyse natale</span>
+        <span id="btn_label">Request my birth chart</span>
       </span>
     </button>
 
-    <!-- Status -->
     <div class="status-box" id="status_box"></div>
-
   </div>
-
-  <p class="footnote">Vos données sont envoyées uniquement à votre propre script Google · Aucun stockage tiers</p>
-
 </div>
 
 <script>
-// ==================== ÉTOILES ====================
+// ==========================================
+// ⚠️ CONFIGURATION - MODIFIE CES DEUX LIGNES
+// ==========================================
+
+// 1. Ton URL Google Apps Script (Déploiement > Application Web)
+const GAS_URL = "https://script.google.com/macros/s/AKfycbxbVYcfM4nQXsC2JZPMkaIAWSuHfvWJRep_8dok7R0g1IhQZ9Px8g6GoIJjGBK1C7m6/exec"; 
+
+// 2. Ton nom d'utilisateur gratuit créé sur geonames.org
+const GEONAMES_USERNAME = "elannouche"; 
+
+// ==========================================
+
 (function() {
   const c = document.getElementById('stars');
   for (let i = 0; i < 60; i++) {
-    const s = document.createElement('div');
-    s.className = 'star';
+    const s = document.createElement('div'); s.className = 'star';
     s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;--op:${0.2+Math.random()*0.6}`;
     c.appendChild(s);
   }
 })();
 
-// ==================== ÉTAT ====================
 let selectedCity = null;
-let gender = 'Femme';
-let lang = 'Français';
+let gender = 'Female';
+let lang = 'English';
 let cityTimer = null;
 let ddActive = -1;
 
-// ==================== BOUTONS TOGGLE ====================
 function sel(btn, groupId, val) {
   document.querySelectorAll('#'+groupId+' .toggle-btn').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
-  if (groupId === 'gender_group') gender = val;
-  else lang = val;
+  if (groupId === 'gender_group') gender = val; else lang = val;
 }
 
-// ==================== VILLE AUTOCOMPLETE ====================
 const cityInp = document.getElementById('f_city');
 const cityDd  = document.getElementById('city_dd');
 const cityClr = document.getElementById('city_clear');
@@ -510,195 +253,115 @@ const cityClr = document.getElementById('city_clear');
 cityInp.addEventListener('input', () => {
   const q = cityInp.value.trim();
   cityClr.style.display = q ? 'block' : 'none';
-  selectedCity = null;
-  document.getElementById('coords_badge').style.display = 'none';
-  clearTimeout(cityTimer);
+  selectedCity = null; clearTimeout(cityTimer);
   if (q.length < 2) { cityDd.classList.remove('open'); return; }
-  cityDd.innerHTML = '<div class="dd-msg">Recherche en cours…</div>';
-  cityDd.classList.add('open');
-  ddActive = -1;
+  cityDd.innerHTML = '<div class="dd-msg">Searching...</div>';
+  cityDd.classList.add('open'); ddActive = -1;
   cityTimer = setTimeout(() => fetchCities(q), 320);
 });
 
-cityInp.addEventListener('keydown', e => {
-  const items = cityDd.querySelectorAll('.dd-item');
-  if (!items.length) return;
-  if (e.key === 'ArrowDown') { e.preventDefault(); ddActive = Math.min(ddActive+1, items.length-1); highlightDd(items); }
-  else if (e.key === 'ArrowUp') { e.preventDefault(); ddActive = Math.max(ddActive-1, 0); highlightDd(items); }
-  else if (e.key === 'Enter' && ddActive >= 0) { e.preventDefault(); items[ddActive].click(); }
-  else if (e.key === 'Escape') cityDd.classList.remove('open');
-});
-
-document.addEventListener('click', e => {
-  if (!cityInp.closest('.city-wrap').contains(e.target)) cityDd.classList.remove('open');
-});
-
-function highlightDd(items) {
-  items.forEach((it, i) => it.classList.toggle('active', i === ddActive));
-  if (ddActive >= 0) items[ddActive].scrollIntoView({ block: 'nearest' });
-}
-
 function clearCity() {
-  cityInp.value = '';
-  cityClr.style.display = 'none';
-  cityDd.classList.remove('open');
-  document.getElementById('coords_badge').style.display = 'none';
-  selectedCity = null;
-  cityInp.focus();
+  cityInp.value = ''; cityClr.style.display = 'none'; cityDd.classList.remove('open'); selectedCity = null; cityInp.focus();
 }
 
 function flag(cc) {
   if (!cc || cc.length !== 2) return '';
-  try { return String.fromCodePoint(...[...cc.toUpperCase()].map(c => 0x1F1E0 + c.charCodeAt(0) - 65)); }
-  catch { return ''; }
+  try { return String.fromCodePoint(...[...cc.toUpperCase()].map(c => 0x1F1E0 + c.charCodeAt(0) - 65)); } catch { return ''; }
 }
 
 async function fetchCities(q) {
   try {
-    const url = `https://secure.geonames.org/searchJSON?q=${encodeURIComponent(q)}&maxRows=8&featureClass=P&orderby=population&username=demo&lang=fr`;
+    const url = `https://secure.geonames.org/searchJSON?q=${encodeURIComponent(q)}&maxRows=8&featureClass=P&orderby=population&username=${GEONAMES_USERNAME}&lang=en`;
     const r = await fetch(url);
     const data = await r.json();
     if (data.geonames && data.geonames.length) { renderCities(data.geonames); return; }
   } catch(e) {}
-  renderFallback(q);
+  cityDd.innerHTML = '<div class="dd-msg">No city found. Check spelling.</div>';
 }
 
 function renderCities(cities) {
   cityDd.innerHTML = '';
   cities.forEach(c => {
-    const div = document.createElement('div');
-    div.className = 'dd-item';
+    const div = document.createElement('div'); div.className = 'dd-item';
     const region = c.adminName1 ? c.adminName1 + ', ' : '';
-    const pop = c.population > 1000000 ? (c.population/1000000).toFixed(1)+'M hab.'
-              : c.population > 1000 ? Math.round(c.population/1000)+'k hab.' : '';
-    div.innerHTML = `<span class="dd-flag">${flag(c.countryCode)}</span>
-      <div>
-        <div class="dd-name">${c.name}</div>
-        <div class="dd-detail">${region}${c.countryName||''}${pop?' · '+pop:''}</div>
-      </div>`;
+    div.innerHTML = `<span class="dd-flag">${flag(c.countryCode)}</span><div><div class="dd-name">${c.name}</div><div class="dd-detail">${region}${c.countryName||''}</div></div>`;
     div.onclick = () => pickCity(c);
     cityDd.appendChild(div);
   });
-  ddActive = -1;
-}
-
-const FALLBACK_CITIES = [
-  {name:'Casablanca',adminName1:'',countryName:'Maroc',countryCode:'MA',lat:33.5731,lng:-7.5898,population:3752000},
-  {name:'Rabat',adminName1:'',countryName:'Maroc',countryCode:'MA',lat:34.0132,lng:-6.8326,population:580000},
-  {name:'Oujda',adminName1:'Oriental',countryName:'Maroc',countryCode:'MA',lat:34.6805,lng:-1.9086,population:500000},
-  {name:'Marrakech',adminName1:'',countryName:'Maroc',countryCode:'MA',lat:31.6295,lng:-7.9811,population:929000},
-  {name:'Fès',adminName1:'',countryName:'Maroc',countryCode:'MA',lat:34.0331,lng:-5.0003,population:1112072},
-  {name:'Tanger',adminName1:'',countryName:'Maroc',countryCode:'MA',lat:35.7673,lng:-5.7998,population:800000},
-  {name:'Agadir',adminName1:'',countryName:'Maroc',countryCode:'MA',lat:30.4278,lng:-9.5981,population:600000},
-  {name:'Meknès',adminName1:'',countryName:'Maroc',countryCode:'MA',lat:33.8941,lng:-5.5549,population:520000},
-  {name:'Paris',adminName1:'Île-de-France',countryName:'France',countryCode:'FR',lat:48.8566,lng:2.3522,population:2161000},
-  {name:'Lyon',adminName1:'Auvergne-Rhône-Alpes',countryName:'France',countryCode:'FR',lat:45.7485,lng:4.8467,population:516000},
-  {name:'Marseille',adminName1:'Provence',countryName:'France',countryCode:'FR',lat:43.2965,lng:5.3698,population:861000},
-  {name:'Bordeaux',adminName1:'Nouvelle-Aquitaine',countryName:'France',countryCode:'FR',lat:44.8378,lng:-0.5792,population:254000},
-  {name:'Alger',adminName1:'',countryName:'Algérie',countryCode:'DZ',lat:36.7372,lng:3.0865,population:3415811},
-  {name:'Tunis',adminName1:'',countryName:'Tunisie',countryCode:'TN',lat:36.8189,lng:10.1658,population:693210},
-  {name:'Dubai',adminName1:'',countryName:'Émirats Arabes Unis',countryCode:'AE',lat:25.2048,lng:55.2708,population:3330000},
-  {name:'Montréal',adminName1:'Québec',countryName:'Canada',countryCode:'CA',lat:45.5017,lng:-73.5673,population:1780000},
-];
-
-function renderFallback(q) {
-  const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  const matches = FALLBACK_CITIES.filter(c => norm(c.name).startsWith(norm(q)));
-  if (matches.length) renderCities(matches);
-  else cityDd.innerHTML = '<div class="dd-msg">Aucune ville trouvée — vérifiez l\'orthographe</div>';
 }
 
 function pickCity(c) {
-  const lat = parseFloat(c.lat || c.latitude);
-  const lng = parseFloat(c.lng || c.longitude);
+  const lat = parseFloat(c.lat || c.latitude); const lng = parseFloat(c.lng || c.longitude);
   const region = c.adminName1 ? ', ' + c.adminName1 : '';
   cityInp.value = c.name + region + ', ' + (c.countryName || c.countryCode);
-  cityClr.style.display = 'block';
-  cityDd.classList.remove('open');
+  cityClr.style.display = 'block'; cityDd.classList.remove('open');
   selectedCity = { name: c.name, country: c.countryName || c.countryCode, lat, lng };
-  const badge = document.getElementById('coords_badge');
-  document.getElementById('coords_txt').textContent = `GPS capturé : ${lat.toFixed(4)}°N, ${lng.toFixed(4)}°E`;
-  badge.style.display = 'flex';
-  ddActive = -1;
 }
 
-// ==================== ENVOI ====================
 async function handleSubmit() {
   const name   = document.getElementById('f_name').value.trim();
   const email  = document.getElementById('f_email').value.trim();
   const dateV  = document.getElementById('f_date').value;
   const timeV  = document.getElementById('f_time').value;
-  const gasUrl = document.getElementById('f_gas_url').value.trim();
 
-  // Validation
   const missing = [];
-  if (!name)   missing.push('Prénom');
-  if (!email)  missing.push('Email');
-  if (!dateV)  missing.push('Date de naissance');
-  if (!timeV)  missing.push('Heure de naissance');
-  if (!selectedCity) missing.push('Ville de naissance (sélectionnez dans la liste)');
-  if (!gasUrl) missing.push('URL du script Google');
+  if (!name)   missing.push('First Name');
+  if (!dateV)  missing.push('Date of Birth');
+  if (!selectedCity) missing.push('City of Birth (select from list)');
 
   if (missing.length) {
-    showStatus('error', '⚠ Champs manquants :\n' + missing.map(m => '· '+m).join('\n'));
+    showStatus('error', '⚠ Missing fields:\n' + missing.map(m => '· '+m).join('\n'));
     return;
   }
 
   const [year, month, day] = dateV.split('-').map(Number);
-  const [hour, minute] = timeV.split(':').map(Number);
+  
+  // Heure par défaut à 12:00 si laissée vide
+  let hour = 12, minute = 0;
+  if (timeV) {
+    const timeParts = timeV.split(':').map(Number);
+    hour = timeParts[0]; minute = timeParts[1];
+  }
 
   const payload = {
-    name,
-    email,
-    day,
-    month,
-    year,
-    hour,
-    minute,
+    name, email, day, month, year, hour, minute,
     city: selectedCity.name + ', ' + selectedCity.country,
-    lat:  selectedCity.lat,
-    lng:  selectedCity.lng,
-    gender,
-    language: lang,
+    lat: selectedCity.lat, lng: selectedCity.lng,
+    gender, language: lang,
   };
 
-  // UI loading
   const btn = document.getElementById('submit_btn');
   const spinner = document.getElementById('spinner');
   const btnLabel = document.getElementById('btn_label');
-  btn.disabled = true;
-  spinner.style.display = 'block';
-  btnLabel.textContent = 'Génération en cours…';
-  showStatus('sending', '✦ Envoi des données à votre script…\nCela peut prendre 30 à 60 secondes le temps que le PDF soit généré.');
+  btn.disabled = true; spinner.style.display = 'block'; btnLabel.textContent = 'Processing...';
+  showStatus('sending', '✦ Sending your request...');
 
   try {
-    await fetch(gasUrl, {
+    // CORRECTION DU CORS ICI (text/plain)
+    const response = await fetch(GAS_URL, {
       method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(payload)
     });
-
-    showStatus('success',
-      `✦ Données envoyées avec succès !\n\nVotre script Google génère le PDF — vérifiez votre Google Sheet colonne K dans 30 à 60 secondes pour récupérer le lien.`
-    );
+    
+    const result = await response.json();
+    
+    if (result.status === "ok") {
+      showStatus('success', `✦ Request sent successfully!\n\nWe have received your birth details. We will contact you as soon as your personalized reading is ready.`);
+    } else {
+      throw new Error(result.message || "Server error");
+    }
 
   } catch (err) {
-    showStatus('error',
-      `❌ Erreur de connexion : ${err.message}\n\n· Vérifiez que l'URL du script est correcte\n· Vérifiez que le déploiement est en accès "Tout le monde"`
-    );
+    showStatus('error', `❌ Connection error. Please try again later.`);
   } finally {
-    btn.disabled = false;
-    spinner.style.display = 'none';
-    btnLabel.textContent = 'Générer mon analyse natale';
+    btn.disabled = false; spinner.style.display = 'none'; btnLabel.textContent = 'Request my birth chart';
   }
 }
 
 function showStatus(type, msg) {
   const box = document.getElementById('status_box');
-  box.className = 'status-box ' + type;
-  box.style.whiteSpace = 'pre-line';
-  box.textContent = msg;
+  box.className = 'status-box ' + type; box.style.whiteSpace = 'pre-line'; box.textContent = msg;
 }
 </script>
 </body>
